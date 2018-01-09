@@ -32,14 +32,14 @@ defmodule TicTacToe.Game do
     end
   end
 
-  def get(id) when is_binary(id) do
+  def get(id) do
     case GenServer.whereis(via_registry(id)) do
       nil -> {:error, :not_registered}
       pid -> GenServer.call(pid, :get)
     end
   end
 
-  def join(id, player) when is_binary(id) and is_map(player) do
+  def join(id, player) when is_map(player) do
     GenServer.call(via_registry(id), {:join, player})
   end
 
@@ -63,5 +63,7 @@ defmodule TicTacToe.Game do
 
   # Private Helpers
 
-  defp via_registry(id), do: {:via, Registry, {:game_registry, id}}
+  def via_registry({:ok, game_or_id}), do: via_registry(game_or_id)
+  def via_registry(%Game{id: id}), do: via_registry(id)
+  def via_registry(id), do: {:via, Registry, {:game_registry, id}}
 end
