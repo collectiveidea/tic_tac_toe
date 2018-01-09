@@ -17,8 +17,7 @@ defmodule TicTacToe.GameTest do
 
       return = Game.register(custom_id)
 
-      assert {:ok, %Game{} = game} = return
-      assert game.id == custom_id
+      assert {:ok, %Game{id: ^custom_id}} = return
     end
 
     test "returns an error if the provided ID is already registered" do
@@ -28,6 +27,24 @@ defmodule TicTacToe.GameTest do
       return = Game.register(custom_id)
 
       assert {:error, :already_registered} = return
+    end
+  end
+
+  describe "get/1" do
+    test "returns a registered game with the provided ID" do
+      {:ok, game} = Game.register
+
+      return = Game.get(game.id)
+
+      assert {:ok, ^game} = return
+    end
+
+    test "returns an error if the provided ID is not registered" do
+      missing_id = UUID.uuid4
+
+      return = Game.get(missing_id)
+
+      assert {:error, :not_registered} = return
     end
   end
 end
