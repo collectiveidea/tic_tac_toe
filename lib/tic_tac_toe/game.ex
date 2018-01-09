@@ -25,21 +25,21 @@ defmodule TicTacToe.Game do
 
   # Public API
 
-  def register(id \\ UUID.uuid4) do
+  def register(id \\ UUID.uuid4) when is_binary(id) do
     case Game.Supervisor.register_game(id) do
       {:ok, pid} -> GenServer.call(pid, :get)
       {:error, {:already_started, _pid}} -> {:error, :already_registered}
     end
   end
 
-  def get(id) do
+  def get(id) when is_binary(id) do
     case GenServer.whereis(via_registry(id)) do
       nil -> {:error, :not_registered}
       pid -> GenServer.call(pid, :get)
     end
   end
 
-  def join(id, player) do
+  def join(id, player) when is_binary(id) and is_map(player) do
     GenServer.call(via_registry(id), {:join, player})
   end
 
