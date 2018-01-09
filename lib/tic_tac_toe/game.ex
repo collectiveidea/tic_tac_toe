@@ -39,10 +39,26 @@ defmodule TicTacToe.Game do
     end
   end
 
+  def join(id, player) do
+    GenServer.call(via_registry(id), {:join, player})
+  end
+
   # GenServer Callbacks
 
   def handle_call(:get, _from, game) do
     {:reply, {:ok, game}, game}
+  end
+
+  def handle_call({:join, player}, _from, %{player_1: nil} = game) do
+    game = Map.put(game, :player_1, player)
+    {:reply, {:ok, game}, game}
+  end
+  def handle_call({:join, player}, _from, %{player_2: nil} = game) do
+    game = Map.put(game, :player_2, player)
+    {:reply, {:ok, game}, game}
+  end
+  def handle_call({:join, _player}, _from, game) do
+    {:reply, {:error, :no_vacancy}, game}
   end
 
   # Private Helpers
