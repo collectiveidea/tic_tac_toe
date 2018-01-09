@@ -73,7 +73,7 @@ defmodule TicTacToe.Game do
   end
 
   def handle_call({:leave, player_id}, _from, %{player_1: %{id: player_id}} = game) do
-    game = Map.put(game, :player_1, nil)
+    game = game |> Map.put(:player_1, game.player_2) |> Map.put(:player_2, nil)
     {:reply, {:ok, game}, game}
   end
   def handle_call({:leave, player_id}, _from, %{player_2: %{id: player_id}} = game) do

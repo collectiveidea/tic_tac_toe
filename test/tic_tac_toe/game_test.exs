@@ -158,5 +158,17 @@ defmodule TicTacToe.GameTest do
 
       assert {:ok, %Game{player_1: nil, player_2: nil}} = return
     end
+
+    test "promotes the second player when the first player leaves" do
+      alice = %{id: "alice"}
+      bob = %{id: "bob"}
+
+      return = Game.register
+               |> Game.join(alice)
+               |> Game.join(bob)
+               |> Game.leave(alice)
+
+      assert {:ok, %Game{player_1: ^bob, player_2: nil}} = return
+    end
   end
 end
