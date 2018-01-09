@@ -10,6 +10,10 @@ defmodule TicTacToe.GameTest do
 
       assert {:ok, %Game{} = game} = return
       assert is_binary(game.id)
+      assert game.player_1 == nil
+      assert game.player_2 == nil
+      assert game.moves == []
+      assert game.winner == nil
     end
 
     test "registers and returns a new game with a provided ID" do
