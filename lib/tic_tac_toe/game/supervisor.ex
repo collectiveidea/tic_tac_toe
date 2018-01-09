@@ -1,7 +1,7 @@
 defmodule TicTacToe.Game.Supervisor do
   use Supervisor
 
-  @name TicTacToe.Game.Supervisor
+  @name __MODULE__
 
   # Supervisor Initialization
 
