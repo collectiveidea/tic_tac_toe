@@ -1,18 +1,9 @@
 defmodule TicTacToe do
-  @moduledoc """
-  Documentation for TicTacToe.
-  """
+  use Application
 
-  @doc """
-  Hello world.
+  # Application Initialization
 
-  ## Examples
-
-      iex> TicTacToe.hello
-      :world
-
-  """
-  def hello do
-    :world
+  def start(_type, _args) do
+    TicTacToe.Supervisor.start_link
   end
 end
