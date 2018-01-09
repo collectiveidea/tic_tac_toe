@@ -15,6 +15,6 @@ defmodule TicTacToe.Supervisor do
       TicTacToe.Game.Supervisor,
     ]
 
-    Supervisor.init(children, strategy: :one_for_one)
+    Supervisor.init(children, strategy: :one_for_all)
   end
 end
