@@ -54,6 +54,12 @@ defmodule TicTacToe.Game do
     {:reply, {:ok, game}, game}
   end
 
+  def handle_call({:join, %{id: player_id}}, _from, %{player_1: %{id: player_id}} = game) do
+    {:reply, {:ok, game}, game}
+  end
+  def handle_call({:join, %{id: player_id}}, _from, %{player_2: %{id: player_id}} = game) do
+    {:reply, {:ok, game}, game}
+  end
   def handle_call({:join, player}, _from, %{player_1: nil} = game) do
     game = Map.put(game, :player_1, player)
     {:reply, {:ok, game}, game}

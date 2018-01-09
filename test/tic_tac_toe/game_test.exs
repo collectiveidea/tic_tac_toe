@@ -51,4 +51,58 @@ defmodule TicTacToe.GameTest do
       assert {:error, :not_registered} = return
     end
   end
+
+  describe "join/2" do
+    test "adds the provided player into the first position" do
+      alice = %{id: "alice"}
+      {:ok, game} = Game.register
+
+      return = Game.join(game.id, alice)
+
+      assert {:ok, %Game{player_1: ^alice, player_2: nil}} = return
+    end
+
+    test "is pipeable" do
+      alice = %{id: "alice"}
+
+      return = Game.register
+               |> Game.join(alice)
+
+      assert {:ok, %Game{player_1: ^alice, player_2: nil}} = return
+    end
+
+    test "adds the provided player into the second position" do
+      alice = %{id: "alice"}
+      bob = %{id: "bob"}
+
+      return = Game.register
+               |> Game.join(alice)
+               |> Game.join(bob)
+
+      assert {:ok, %Game{player_1: ^alice, player_2: ^bob}} = return
+    end
+
+    test "returns the game if the provided player has already joined" do
+      alice = %{id: "alice"}
+
+      return = Game.register
+               |> Game.join(alice)
+               |> Game.join(alice)
+
+      assert {:ok, %Game{player_1: ^alice, player_2: nil}} = return
+    end
+
+    test "returns an error if the game cannot be joined" do
+      alice = %{id: "alice"}
+      bob = %{id: "bob"}
+      charlie = %{id: "charlie"}
+
+      return = Game.register
+               |> Game.join(alice)
+               |> Game.join(bob)
+               |> Game.join(charlie)
+
+      assert {:error, :no_vacancy} = return
+    end
+  end
 end
