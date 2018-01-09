@@ -39,12 +39,12 @@ defmodule TicTacToe.Game do
     end
   end
 
-  def join(id, player) when is_map(player) do
+  def join(id, %{id: player_id} = player) when is_binary(player_id) do
     GenServer.call(via_registry(id), {:join, player})
   end
 
   def leave(id, %{id: player_id}), do: leave(id, player_id)
-  def leave(id, player_id) do
+  def leave(id, player_id) when is_binary(player_id) do
     GenServer.call(via_registry(id), {:leave, player_id})
   end
 
