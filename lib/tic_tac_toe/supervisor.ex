@@ -11,7 +11,7 @@ defmodule TicTacToe.Supervisor do
 
   def init(:ok) do
     children = [
-      TicTacToe.Game.Registry,
+      {Registry, keys: :unique, name: :game_registry},
       TicTacToe.Game.Supervisor,
     ]
 

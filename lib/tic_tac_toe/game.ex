@@ -47,5 +47,5 @@ defmodule TicTacToe.Game do
 
   # Private Helpers
 
-  defp via_registry(id), do: {:via, Game.Registry, id}
+  defp via_registry(id), do: {:via, Registry, {:game_registry, id}}
 end
