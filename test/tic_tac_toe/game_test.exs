@@ -105,4 +105,58 @@ defmodule TicTacToe.GameTest do
       assert {:error, :no_vacancy} = return
     end
   end
+
+  describe "leave/2" do
+    test "removes the provided player from the first position" do
+      alice = %{id: "alice"}
+      {:ok, game} = Game.register |> Game.join(alice)
+
+      return = Game.leave(game.id, alice)
+
+      assert {:ok, %Game{player_1: nil, player_2: nil}} = return
+    end
+
+    test "is pipeable" do
+      alice = %{id: "alice"}
+
+      return = Game.register
+               |> Game.join(alice)
+               |> Game.leave(alice)
+
+      assert {:ok, %Game{player_1: nil, player_2: nil}} = return
+    end
+
+    test "removes the provided player from the second position" do
+      alice = %{id: "alice"}
+      bob = %{id: "bob"}
+
+      return = Game.register
+               |> Game.join(alice)
+               |> Game.join(bob)
+               |> Game.leave(bob)
+
+      assert {:ok, %Game{player_1: ^alice, player_2: nil}} = return
+    end
+
+    test "returns the game if the provided player hasn't joined" do
+      alice = %{id: "alice"}
+      bob = %{id: "bob"}
+
+      return = Game.register
+               |> Game.join(alice)
+               |> Game.leave(bob)
+
+      assert {:ok, %Game{player_1: ^alice, player_2: nil}} = return
+    end
+
+    test "accepts a player ID" do
+      alice = %{id: "alice"}
+
+      return = Game.register
+               |> Game.join(alice)
+               |> Game.leave(alice.id)
+
+      assert {:ok, %Game{player_1: nil, player_2: nil}} = return
+    end
+  end
 end
